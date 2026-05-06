@@ -1,3 +1,54 @@
+# Detect color support
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+    *) color_prompt=no;;
+esac
+
+# Optional: force color
+# force_color_prompt=yes
+
+if [[ -n "$force_color_prompt" ]]; then
+    if command -v tput >/dev/null && tput setaf 1 >/dev/null 2>&1; then
+        color_prompt=yes
+    else
+        color_prompt=no
+    fi
+fi
+
+# Prompt
+if [[ "$color_prompt" == yes ]]; then
+    PROMPT='%F{green}%n@%m%f:%F{blue}%1~%f$ '
+else
+    PROMPT='%n@%m:%1~$ '
+fi
+
+unset color_prompt force_color_prompt
+
+# --- Set terminal title (like bash PS1 trick) ---
+case "$TERM" in
+    xterm*|rxvt*)
+        precmd() {
+            print -Pn "\e]0;%n@%m: %~\a"
+        }
+    ;;
+esac
+
+# --- Enable color support for ls / grep ---
+# macOS uses BSD ls, not GNU ls → different flags
+
+# If you installed coreutils via brew, prefer gls
+if command -v gls >/dev/null; then
+    alias ls='gls --color=auto'
+else
+    alias ls='ls -G'   # BSD/macOS color flag
+fi
+
+# grep coloring (works on macOS)
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+
 export SSL_CERT_FILE=~/.ssh/corp-ca.crt
 export REQUESTS_CA_BUNDLE=~/.ssh/corp-ca.crt
 export NODE_EXTRA_CA_CERTS=~/.ssh/corp-ca.crt
@@ -9,6 +60,14 @@ echo 'export NODE_EXTRA_CA_CERTS=~/.ssh/corp-ca.crt' >> ~/.zshrc
 export SSL_CERT_FILE=~/.ssh/corp-ca.crt
 export REQUESTS_CA_BUNDLE=~/.ssh/corp-ca.crt
 export NODE_EXTRA_CA_CERTS=~/.ssh/corp-ca.crt
+
+# Colima and podman short key
+alias cms='colima start --cpu 4 --memory 8 --disk 64 --mount-type virtiofs'
+alias cmt='colima stop'
+alias cmstat='colima status'
+alias cmprune='docker system prune -a --volumes'
+
+alias pmstart='podman machine start; export DOCKER_HOST="unix:///var/folders/m3/sb8vn08953n83m01_1zfz95c0000gr/T/podman/podman-machine-default-api.sock"'
 
 # some more ls aliases
 alias ll='ls -alFh'
