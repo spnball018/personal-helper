@@ -9,3 +9,22 @@ echo 'export NODE_EXTRA_CA_CERTS=~/.ssh/corp-ca.crt' >> ~/.zshrc
 export SSL_CERT_FILE=~/.ssh/corp-ca.crt
 export REQUESTS_CA_BUNDLE=~/.ssh/corp-ca.crt
 export NODE_EXTRA_CA_CERTS=~/.ssh/corp-ca.crt
+
+# some more ls aliases
+alias ll='ls -alFh'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Docker alias
+alias dps='docker ps'
+alias dpsa='docker ps -a'
+alias dimg='docker images'
+alias dc='docker compose'
+alias dcu='docker compose up'
+alias dcd='docker compose down'
+alias dcb='docker compose build'
+alias dce='docker compose exec -it'
+alias dcr='docker compose run --rm'
+alias drm='docker rm $(sudo docker ps -a -q)'
+export SSL_CERT_FILE=~/.ssh/corp-ca.crt
+export REQUESTS_CA_BUNDLE=~/.ssh/corp-ca.crt
